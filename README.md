@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="images/5.png" alt="header image">
+  <img src="images/6.png" alt="header image">
       </a> <a href="https://github.com/arindal1" target="_blank">
       <img src="images/g.png"  width="80px" alt="github"></a> <a href="https://twitter.com/arindal_17" target="_blank">
       <img src="images/x.png"  width="80px" alt="twitter"></a>
