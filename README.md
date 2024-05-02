@@ -16,7 +16,6 @@
 - Takes screenshots of the desktop.
 - Records audio from the microphone (optional).
 - Sends logged data via email at regular intervals.
-- Resilient against termination attempts through Task Manager.
 
 ## Installation
 
