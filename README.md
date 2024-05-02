@@ -66,7 +66,7 @@ python watchdog.py
 
 ## Configuration
 
-Before using KeyTrack, make sure to configure the following settings:
+Before using WatchDog, make sure to configure the following settings:
 
 - Email address: Replace `"your_email@example.com"` with your actual email address.
 - Email password: Replace `"your_email_password"` with your email password.
@@ -87,5 +87,5 @@ To terminate the script, open **Task Manager** and go to the **Processes** tab. 
 
 ## Disclaimer
 
-WatchDog is intended for educational and testing purposes only. It should not be used for any illegal or unethical activities. The developers of this project are not responsible for any misuse or damage caused by the use of this software.
+WatchDog is intended for educational and testing purposes only. It should not be used for any illegal or unethical activities. The developer of this project is not responsible for any misuse or damage caused by the use of this software.
 Always use keyloggers responsibly and ethically, respecting the privacy and security of others.
